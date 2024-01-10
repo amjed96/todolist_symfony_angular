@@ -16,16 +16,18 @@ class TodoController extends AbstractController
     {
         $todoList = $todoRepositry->findAll();
 
-        $jsonTodoList = $serializer->serialize($todoList, 'json');
+        $jsonTodoList = $serializer->serialize($todoList, 'json', ['groups' => 'getTodos']);
 
         return new JsonResponse($jsonTodoList, Response::HTTP_OK, [], true);
     }
 
     #[Route('/api/todo/{id}', name: 'app_todo_id', methods: ['GET'])]
-    public function getTodoById(int $id, TodoRepository $todoRepositry, SerializerInterface $serializer) {
+    public function getTodoById(int $id, TodoRepository $todoRepositry, SerializerInterface $serializer) 
+    {
         $todo = $todoRepositry->find($id);
-        if ($todo != null) {
-            $jsonTodo = $serializer->serialize($todo, 'json');
+        if ($todo != null) 
+        {
+            $jsonTodo = $serializer->serialize($todo, 'json', ['groups' => 'getTodos']);
             return new JsonResponse($jsonTodo, Response::HTTP_OK, [], true);
         }
         return new JsonResponse(null , Response::HTTP_NOT_FOUND);

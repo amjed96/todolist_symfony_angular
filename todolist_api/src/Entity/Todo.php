@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\TodoRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: TodoRepository::class)]
 class Todo
@@ -12,21 +13,27 @@ class Todo
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(["getTodos", "getCategories"])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(["getTodos", "getCategories"])]
     private ?string $titre = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(["getTodos", "getCategories"])]
     private ?string $description = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[Groups(["getTodos", "getCategories"])]
     private ?\DateTimeInterface $date_creation = null;
 
     #[ORM\Column]
+    #[Groups(["getTodos", "getCategories"])]
     private ?bool $etat = null;
 
     #[ORM\ManyToOne(inversedBy: 'todos')]
+    #[Groups(["getTodos"])]
     private ?Category $category = null;
 
     public function getId(): ?int
